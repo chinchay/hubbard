@@ -20,4 +20,5 @@ RUN pip3 install numpy
 # how to run https://www.numfys.net/howto/F2PY/
 # https://www.matecdev.com/posts/fortran-in-python.html
 # https://www.matecdev.com/posts/fortran-in-python.html#:~:text=There%20are%20basically%20two%20basic,Cython%20on%20the%20Python%20side.
-# python -m numpy.f2py -c -m myflib my_fortran_lib.f90
+# python3 -m numpy.f2py -c -m myflib my_fortran_lib.f90
+
