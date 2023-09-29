@@ -22,3 +22,19 @@ RUN pip3 install numpy
 # https://www.matecdev.com/posts/fortran-in-python.html#:~:text=There%20are%20basically%20two%20basic,Cython%20on%20the%20Python%20side.
 # python3 -m numpy.f2py -c -m myflib my_fortran_lib.f90
 
+
+# to install Jupyter
+RUN apk add linux-headers # https://github.com/giampaolo/psutil/issues/872
+RUN pip install jupyter
+
+CMD ["jupyter", "notebook", "--ip", "0.0.0.0", "--port", "8888", "--no-browser", "--allow-root"] 
+
+# docker build -t alpine .
+# docker run -it --rm -p 8888:8888 alpine
+# rodar Jupyter:
+# jupyter notebook --ip 0.0.0.0 --port 8888 --no-browser --allow-root
+# https://stackoverflow.com/questions/38830610/access-jupyter-notebook-running-on-docker-container
+# access on browser http://localhost:8888
+# although it will ask your password, better copy paste from the terminal the address of the following shape:
+# http://127.0.0.1:8888/tree?token=0842b81834718380af7e2a6ff37b7aa61ffb9fe2864dc871
+
