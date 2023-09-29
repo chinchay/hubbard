@@ -27,6 +27,8 @@ RUN pip3 install numpy
 RUN apk add linux-headers # https://github.com/giampaolo/psutil/issues/872
 RUN pip install jupyter
 
+RUN mkdir work
+WORKDIR "/work"
 CMD ["jupyter", "notebook", "--ip", "0.0.0.0", "--port", "8888", "--no-browser", "--allow-root"] 
 
 # docker build -t alpine .
@@ -38,3 +40,5 @@ CMD ["jupyter", "notebook", "--ip", "0.0.0.0", "--port", "8888", "--no-browser",
 # although it will ask your password, better copy paste from the terminal the address of the following shape:
 # http://127.0.0.1:8888/tree?token=0842b81834718380af7e2a6ff37b7aa61ffb9fe2864dc871
 
+# https://saturncloud.io/blog/how-to-access-jupyter-notebook-running-on-docker-container/
+# docker run -it --rm -p 8888:8888 -v src:/work/src alpine
