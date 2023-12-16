@@ -1,0 +1,34 @@
+FROM ubuntu:latest
+
+RUN apt-get update && apt-get upgrade -y && apt-get -y install wget
+
+# Installing intel fortran compilers and mkl using reference
+# in https://gist.github.com/scivision/d94bb10a01fa3b8ed0c9a93ee16318ba
+RUN wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+RUN apt-get -y install gpg
+RUN apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+RUN rm GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+RUN echo "deb https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list
+
+# Installing MKL
+RUN apt-get update && apt-get -y install intel-oneapi-compiler-fortran
+RUN apt-get -y install intel-oneapi-mkl
+RUN apt-get -y install make
+
+# Solving a problem by installing gcc
+# https://community.intel.com/t5/Intel-Fortran-Compiler/Ifort-error-10417-Problem-setting-up-the-Intel-R-Compiler/td-p/1362738
+RUN apt-get -y install gcc
+
+# Source variables
+# https://stackoverflow.com/questions/55921914/how-to-source-a-script-with-environment-variables-in-a-docker-build-process
+ENTRYPOINT ["bash", "-c", "source /opt/intel/oneapi/setvars.sh && \"$@\"", "-s"]
+
+WORKDIR "/work/src"
+CMD ["/bin/bash"]
+
+# Clean up APT when done.
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+## Build the image and run a container
+## docker build -t myintel .
+## docker run -it --rm -p 8888:8888 -v $PWD/src:/work/src myintel
